@@ -38,6 +38,13 @@ public class BotKeyboards {
         button6.setText("Учётки КАиП для ПСИ");
         button6.setCallbackData("accounts_kaip_psi");
 
+        InlineKeyboardButton button7 = new InlineKeyboardButton();
+        button7.setText("Просрочился пароль?");
+        button7.setCallbackData("expired_pass");
+
+        InlineKeyboardButton button8 = new InlineKeyboardButton();
+        button8.setText("График релизов");
+        button8.setCallbackData("sched_release");
 
         // Создаем ряд кнопок
         List<InlineKeyboardButton> row = new ArrayList<>();
@@ -53,12 +60,16 @@ public class BotKeyboards {
         row3.add(button5);
         row3.add(button6);
 
+        List<InlineKeyboardButton> row4 = new ArrayList<>();
+        row4.add(button7);
+        row4.add(button8);
+
         // Создаем клавиатуру
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(row);
         keyboard.add(row2);
         keyboard.add(row3);
-
+        keyboard.add(row4);
 
         markup.setKeyboard(keyboard);
     }

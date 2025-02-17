@@ -23,12 +23,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
 public class MyTelegramBot extends TelegramLongPollingBot {
     GetFromEnvs getFromEnvs = new GetFromEnvs();
     HealthCheck healthCheck = new HealthCheck();
+    List<String> checkAccessList = Arrays.asList(getFromEnvs.getFromEnvsByName("userList").split(" "));
 
     @Override
     public String getBotUsername() {
@@ -47,6 +49,11 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         if (update.hasCallbackQuery()) {
             String callData = update.getCallbackQuery().getData();
             long chatId = update.getCallbackQuery().getMessage().getChatId();
+            String userName = update.getCallbackQuery().getFrom().getUserName();
+            System.out.println("LOGS!!! " + userName + "; Message " + update.getMessage());
+            if (!checkAccessList.contains(userName)){
+                sendMessage(chatId,"Sorry, but you don't have permission! Please contact with administrator @sashka_svb");
+            }
 
             switch (callData) {
                 case "status_ift":
@@ -74,6 +81,12 @@ public class MyTelegramBot extends TelegramLongPollingBot {
                     break;
                 case "accounts_kaip_psi":
                     message = "УЗ для КАИП ПСИ:\n" + getAccByTypes(ACCOUNTS.KAIP_PSI) + "\nPass - Qwerty12345!";
+                    break;
+                case "expired_pass":
+                    message = "Сменить пароль можно здесь: \nhttps://vdi.vtb.ru";
+                    break;
+                case "sched_release":
+                    message = "Сфера релизы: \nhttps://sfera.inno.local/pprc";
                     break;
                 default:
                     message = "oooh no";
