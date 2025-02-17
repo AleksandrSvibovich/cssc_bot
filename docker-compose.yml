@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  my-bot:
+    container_name: my-bot-container
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"  # Пример порта, если ваш бот использует HTTP
+    volumes:
+      - .:/app
