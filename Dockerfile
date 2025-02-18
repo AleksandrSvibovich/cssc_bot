@@ -12,6 +12,7 @@ RUN mvn clean package
 FROM openjdk:21-jdk-slim
 
 WORKDIR /app
-COPY --from=build /app/target/myBot.jar /app/myBot.jar
+# Копируем JAR-файл с правильным именем
+COPY --from=build /app/target/*.jar /app/myBot.jar
 
 CMD ["java", "-jar", "myBot.jar"]
