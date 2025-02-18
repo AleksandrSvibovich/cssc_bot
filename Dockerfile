@@ -16,4 +16,3 @@ WORKDIR /app
 COPY --from=build /root/csscBot/cssc_bot/target/*.jar /app/my-Bot.jar
 
 CMD ["java", "-jar", "my-Bot.jar"]
-/csscBot/cssc_bot/target
