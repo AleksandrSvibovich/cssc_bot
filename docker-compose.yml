@@ -1,10 +1,11 @@
 version: '3.8'
 services:
   my-bot:
+    image: my-bot-image
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: my-bot-container
-    build: .
-    restart: always
-    ports:
-      - "8080:8080"  # Пример порта, если ваш бот использует HTTP
     volumes:
-      - .:/app
+      - ./data:/app/data  # Убедитесь, что путь корректен
+    command: java -jar /app/myBot.jar

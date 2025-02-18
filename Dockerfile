@@ -13,6 +13,6 @@ FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 # Копируем JAR-файл с правильным именем
-COPY --from=build /app/target/my-Bot.jar /app/my-Bot.jar
+COPY --from=build /app/target/my-Bot.jar /app/x/my-Bot.jar
 
-CMD ["java", "-jar", "my-Bot.jar"]
+CMD ["java", "-jar", "/app/x/my-Bot.jar"]
