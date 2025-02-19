@@ -18,9 +18,9 @@ FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
+COPY --from=build /app/target/lib /app/lib  # Копируем зависимости
 RUN ls -l /app  # Проверка содержимого
 RUN jar tf /app/my-Bot.jar  # Проверка содержимого JAR-файла
 RUN jar xf /app/my-Bot.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF  # Проверка манифеста
 
-CMD ["java", "-cp", "my-bot-app.jar:lib/*", "bot.Main", "--logging.level.root=DEBUG"]
-# CMD ["java", "-jar", "/app/my-Bot.jar", "--logging.level.root=DEBUG"]
+CMD ["java", "-cp", "my-Bot.jar:lib/*", "bot.Main", "--logging.level.root=DEBUG"]
