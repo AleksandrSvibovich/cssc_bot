@@ -16,4 +16,3 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
 
 CMD ["java", "-jar", "/app/my-Bot.jar", "--logging.level.root=DEBUG"]
-
