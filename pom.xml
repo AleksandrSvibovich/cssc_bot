@@ -75,7 +75,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>src.main.java.bot.Main</mainClass>
+                            <mainClass>bot.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
