@@ -17,9 +17,9 @@ RUN jar xf /app/target/*.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF
 FROM openjdk:21-jdk-slim
 
 WORKDIR /app
-COPY --from=build /app/target/*.jar /app/my-Bot-jar-with-dependencies.jar
+COPY --from=build /app/target/*.jar /app/my-Bot.jar
 RUN ls -l /app  # Проверка содержимого
-RUN jar tf /app/my-Bot-jar-with-dependencies.jar  # Проверка содержимого JAR-файла
-RUN jar xf /app/my-Bot-jar-with-dependencies.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF  # Проверка манифеста
+RUN jar tf /app/my-Bot.jar  # Проверка содержимого JAR-файла
+RUN jar xf /app/my-Bot.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF  # Проверка манифеста
 
-CMD ["java", "-jar", "/app/my-Bot-jar-with-dependencies.jar", "--logging.level.root=DEBUG"]
+CMD ["java", "-jar", "/app/my-Bot.jar", "--logging.level.root=DEBUG"]
