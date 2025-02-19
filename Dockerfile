@@ -15,4 +15,4 @@ WORKDIR /app
 # Копируем JAR-файл с правильным именем
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
 
-CMD ["java", "-jar", "/app/my-Bot.jar", "--logging.level.root=DEBUG"]
+CMD ["java", "-jar", "/app/*.jar", "--logging.level.root=DEBUG"]
