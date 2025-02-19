@@ -8,4 +8,4 @@ services:
     container_name: my-bot-container
     volumes:
       - ./data:/app/data
-    command: java -jar /app/myBot.jar
+    command: java -jar /app/my-Bot-jar-with-dependencies.jar
