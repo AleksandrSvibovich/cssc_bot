@@ -16,10 +16,11 @@ RUN jar xf /app/target/*.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF
 # Финальный этап
 FROM openjdk:23-jdk-slim
 
+
 WORKDIR /app
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
-COPY --from=build /app/target/lib /app/lib
-RUN ls -l /app  # Проверка содержимого
+# COPY --from=build /app/target/lib /app/lib
+# RUN ls -l /app  # Проверка содержимого
 RUN jar tf /app/my-Bot.jar  # Проверка содержимого JAR-файла
 RUN jar xf /app/my-Bot.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF  # Проверка манифеста
 
