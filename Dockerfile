@@ -1,5 +1,5 @@
 # Этап сборки
-FROM openjdk:21-jdk-slim AS build
+FROM openjdk:23-jdk-slim AS build
 
 # Установка Maven и unzip
 RUN apt-get update && apt-get install -y maven && apt-get clean
@@ -14,7 +14,7 @@ RUN jar tf /app/target/*.jar  # Проверка содержимого JAR-фа
 RUN jar xf /app/target/*.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF
 
 # Финальный этап
-FROM openjdk:21-jdk-slim
+FROM openjdk:23-jdk-slim
 
 WORKDIR /app
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
