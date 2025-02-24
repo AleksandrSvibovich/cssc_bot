@@ -24,4 +24,4 @@ COPY --from=build /app/target/*.jar /app/my-Bot-jar-with-dependencies.jar
 RUN jar tf /app/my-Bot-jar-with-dependencies.jar  # Проверка содержимого JAR-файла
 RUN jar xf /app/my-Bot-jar-with-dependencies.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF  # Проверка манифеста
 
-CMD ["java", "-cp", "my-Bot-jar-with-dependencies.jar:lib/*", "bot.Main", "--logging.level.root=DEBUG"]
+CMD ["java", "-cp", "my-Bot-jar-with-dependencies.jar:lib/*", "bot.tgbot", "--logging.level.root=DEBUG"]
