@@ -19,6 +19,7 @@ FROM openjdk:23-jdk-slim
 
 WORKDIR /app
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
+COPY config.properties /app/config.properties  # Копируем файл config.properties
 # COPY --from=build /app/target/lib /app/lib
 # RUN ls -l /app  # Проверка содержимого
 RUN jar tf /app/my-Bot.jar  # Проверка содержимого JAR-файла
