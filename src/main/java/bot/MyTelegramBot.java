@@ -5,27 +5,19 @@ import bot.enums.ACCOUNTS;
 import bot.enums.URLS;
 import bot.getfromenvs.GetFromEnvs;
 import bot.keyboards.BotKeyboards;
-import com.microsoft.playwright.APIResponse;
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
-import org.json.JSONObject;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import checks.auxiliary.ApiClient;
-import checks.auxiliary.ApiConfig;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
+
 
 public class MyTelegramBot extends TelegramLongPollingBot {
     GetFromEnvs getFromEnvs = new GetFromEnvs();

@@ -26,22 +26,22 @@
             <version>7.8.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.google.code.gson</groupId>-->
+<!--            <artifactId>gson</artifactId>-->
+<!--            <version>2.10.1</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.4</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.postgresql</groupId>-->
+<!--            <artifactId>postgresql</artifactId>-->
+<!--            <version>42.7.4</version>-->
+<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.telegram/telegrambots -->
         <dependency>
             <groupId>org.telegram</groupId>
@@ -49,11 +49,12 @@
             <version>6.9.7.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.telegram/telegrambots-spring-boot-starter -->
-        <dependency>
-            <groupId>org.telegram</groupId>
-            <artifactId>telegrambots-spring-boot-starter</artifactId>
-            <version>6.9.7.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <scope>test</scope>-->
+<!--            <groupId>org.telegram</groupId>-->
+<!--            <artifactId>telegrambots-spring-boot-starter</artifactId>-->
+<!--            <version>6.9.7.1</version>-->
+<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.telegram/telegrambots-meta -->
         <dependency>
             <groupId>org.telegram</groupId>
@@ -75,7 +76,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>bot.tgbot</mainClass>
+                            <mainClass>bot.Tgbot</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -110,7 +111,7 @@
 <!--                        <configuration>-->
 <!--                            <transformers>-->
 <!--                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-<!--                                    <mainClass>bot.tgbot</mainClass>-->
+<!--                                    <mainClass>bot.Tgbot</mainClass>-->
 <!--                                </transformer>-->
 <!--                            </transformers>-->
 <!--                        </configuration>-->
@@ -127,7 +128,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>bot.tgbot</mainClass>
+                            <mainClass>bot.Tgbot</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
