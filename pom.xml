@@ -12,25 +12,45 @@
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>3.2.0</spring-boot.version> <!-- Укажите актуальную версию Spring Boot -->
     </properties>
 
     <dependencies>
+        <!-- Spring Boot Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <!-- Playwright -->
         <dependency>
             <groupId>com.microsoft.playwright</groupId>
             <artifactId>playwright</artifactId>
             <version>1.48.0</version>
         </dependency>
+
+        <!-- TestNG -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.8.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- JSON -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
+
+        <!-- Telegram Bots -->
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
@@ -41,54 +61,39 @@
             <artifactId>telegrambots-meta</artifactId>
             <version>6.9.7.1</version>
         </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version> <!-- проверь последнюю версию -->
-        </dependency>
+
+        <!-- Logback -->
+<!--        <dependency>-->
+<!--            <groupId>ch.qos.logback</groupId>-->
+<!--            <artifactId>logback-classic</artifactId>-->
+<!--            <version>1.2.3</version>-->
+<!--        </dependency>-->
     </dependencies>
+
     <build>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-jar-plugin</artifactId>-->
-<!--                <version>3.3.0</version>-->
-<!--                <configuration>-->
-<!--                    <archive>-->
-<!--                        <manifest>-->
-<!--                            <mainClass>bot.Tgbot</mainClass>-->
-<!--                        </manifest>-->
-<!--                    </archive>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!-- Spring Boot Maven Plugin -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.3.0</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>bot.Tgbot</mainClass>
-                        </manifest>
-                    </archive>
+                    <mainClass>bot.Tgbot</mainClass> <!-- Укажите ваш главный класс -->
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
-                <!-- References to interface static methods are allowed only at source level 1.8 or above -->
                 <configuration>
                     <source>23</source>
                     <target>23</target>
@@ -97,5 +102,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
