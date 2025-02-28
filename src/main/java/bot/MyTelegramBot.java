@@ -26,7 +26,7 @@ public class MyTelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "cssc_helper_bot"; // Укажите имя вашего бота
+        return "sanja_test_bot"; // Укажите имя вашего бота
     }
 
     @Override
@@ -64,6 +64,9 @@ public class MyTelegramBot extends TelegramLongPollingBot {
                     break;
                 case "accounts_ift":
                     message = "УЗ для ИФТ:\n" + getAccByTypes(ACCOUNTS.IFT) + "\nPass - Qazwsx123!";
+                    break;
+                case "front_version":
+                    message = "Проверить версию фронта можно выполнив в консоли window.initDevTools()\n";
                     break;
                 case "accounts_psi":
                     message = "УЗ для ПСИ:\n" + getAccByTypes(ACCOUNTS.PSI) + "\nPass - Qazwsx123!";
