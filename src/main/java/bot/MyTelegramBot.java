@@ -1,6 +1,8 @@
 package bot;
 
 import bot.auth.HealthCheck;
+import bot.bd.CreateConnectionBD;
+import bot.bd.CreateTablesBD;
 import bot.enums.ACCOUNTS;
 import bot.enums.URLS;
 import bot.getfromenvs.GetFromEnvs;
@@ -14,7 +16,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
-
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +26,7 @@ import java.util.List;
 public class MyTelegramBot extends TelegramLongPollingBot {
     GetFromEnvs getFromEnvs = new GetFromEnvs();
     HealthCheck healthCheck = new HealthCheck();
+    Connection connection = CreateConnectionBD.getInstance().getConnection();
     List<String> checkAccessList = Arrays.asList(getFromEnvs.getFromEnvsByName("userList").split(" "));
 
     @Override
@@ -41,10 +46,12 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         if (update.hasCallbackQuery()) {
             String callData = update.getCallbackQuery().getData();
             long chatId = update.getCallbackQuery().getMessage().getChatId();
+
             String userName = update.getCallbackQuery().getFrom().getUserName();
+
             System.out.println("LOGS!!! " + userName + "; Message " + update.getMessage());
-            if (!checkAccessList.contains(userName)){
-                sendMessage(chatId,"Sorry, but you don't have permission! Please contact with administrator @sashka_svb");
+            if (!checkAccessList.contains(userName)) {
+                sendMessage(chatId, "Sorry, but you don't have permission! Please contact with administrator @sashka_svb");
             }
 
             switch (callData) {
@@ -174,6 +181,15 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         return message;
     }
 
+    private boolean checkAccess(String userName) {
+        ResultSet resultSet;
+        try {
+            resultSet = connection.createStatement().executeQuery("Select * from users");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true; // to do обрабатывать результаты из resultSet и проверять есть ли там юзер или нету
+    }
 
 }
 
