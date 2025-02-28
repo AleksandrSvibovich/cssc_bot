@@ -50,7 +50,7 @@ public class MyTelegramBot extends TelegramLongPollingBot {
             switch (callData) {
                 case "status_ift":
                     try {
-                        sendMessage(chatId, "Проверяю");
+                        sendMessage(chatId, "Проверяю авторизацию");
                         message = healthCheck.checkAuth();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
