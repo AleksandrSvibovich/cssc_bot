@@ -9,8 +9,8 @@ services:
       - ./data:/app/data
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
-      SPRING_DATASOURCE_USERNAME: alex
-      SPRING_DATASOURCE_PASSWORD: PiDoTa23
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
     depends_on:
       - postgres
     command: java -jar /app/my-Bot.jar
@@ -20,8 +20,8 @@ services:
     container_name: postgres-container
     environment:
       POSTGRES_DB: mydatabase
-      POSTGRES_USER: alex
-      POSTGRES_PASSWORD: PiDoTa23
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
