@@ -185,6 +185,7 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         ResultSet resultSet;
         try {
             resultSet = connection.createStatement().executeQuery("Select * from users");
+            System.out.println(resultSet.toString());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

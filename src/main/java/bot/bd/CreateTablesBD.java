@@ -40,19 +40,45 @@ public class CreateTablesBD {
                     "    password VARCHAR(255) NOT NULL        \n" +
                     ");";
 
-            if (statement.executeQuery("Select * from users").wasNull()){
-                resultSet = statement.executeQuery(create_users);
+
+            try {
+                // Пытаемся выполнить запрос к таблице
+                statement.executeQuery("Select * from users");
+            } catch (SQLException e) {
+                // Если таблицы не существует, создаем её
+                if (e.getSQLState().equals("42S02")) { // Код ошибки "таблица не существует"
+                    statement.executeUpdate(create_users);
+                } else {
+                    // Обработка других ошибок
+                    throw e;
+                }
             }
 
-            if (statement.executeQuery("Select * from environments").wasNull()){
-                resultSet = statement.executeQuery(create_envs);
+            try {
+                // Пытаемся выполнить запрос к таблице
+                statement.executeQuery("Select * from environments");
+            } catch (SQLException e) {
+                // Если таблицы не существует, создаем её
+                if (e.getSQLState().equals("42S02")) { // Код ошибки "таблица не существует"
+                    statement.executeQuery(create_envs);
+                } else {
+                    // Обработка других ошибок
+                    throw e;
+                }
             }
 
-            if (statement.executeQuery("Select * from test_user_accs").wasNull()){
-                resultSet = statement.executeQuery(create_test_acc_table);
+            try {
+                // Пытаемся выполнить запрос к таблице
+                statement.executeQuery("Select * from test_user_accs");
+            } catch (SQLException e) {
+                // Если таблицы не существует, создаем её
+                if (e.getSQLState().equals("42S02")) { // Код ошибки "таблица не существует"
+                    statement.executeQuery(create_test_acc_table);
+                } else {
+                    // Обработка других ошибок
+                    throw e;
+                }
             }
-
-
 
 
 
