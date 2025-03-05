@@ -49,11 +49,12 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         String message;
         if (update.hasCallbackQuery()) {
             String callData = update.getCallbackQuery().getData();
+            logger.info( "this is callData " +  callData);
             long chatId = update.getCallbackQuery().getMessage().getChatId();
 
 
             String userName = update.getCallbackQuery().getFrom().getUserName();
-
+            logger.info( "this is userName " +  userName);
 //            System.out.println("LOGS!!! " + userName + "; Message " + update.getMessage());
             if (!isUserHasPermission(userName)) {
                 sendMessage(chatId, "Sorry, but you don't have permission! Please contact with administrator @sashka_svb");
@@ -122,7 +123,9 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         {
             try {
                 statement = connection.createStatement();
+                logger.info( "this is statement " +  "was created in permission Method");
                 resultSet = statement.executeQuery("Select tg_name from Users");
+                logger.info( "this is resultSet was executed" + resultSet.getString(0));
                 while (resultSet.next()) {
                     // Получаем значение из колонки и добавляем его в список
                     String value = resultSet.getString("tg_name");
@@ -130,6 +133,7 @@ public class MyTelegramBot extends TelegramLongPollingBot {
                 }
 
             } catch (SQLException e) {
+                logger.error("Database error during access check", e);
                 throw new RuntimeException(e);
             }
         }
@@ -212,16 +216,16 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         return message;
     }
 
-    private boolean checkAccess(String userName) {
-        ResultSet resultSet;
-        try {
-            resultSet = connection.createStatement().executeQuery("Select * from users");
-            System.out.println(resultSet.toString());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return true; // to do обрабатывать результаты из resultSet и проверять есть ли там юзер или нету
-    }
+//    private boolean checkAccess(String userName) {
+//        ResultSet resultSet;
+//        try {
+//            resultSet = connection.createStatement().executeQuery("Select * from users");
+//            System.out.println(resultSet.toString());
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return true; // to do обрабатывать результаты из resultSet и проверять есть ли там юзер или нету
+//    }
 
 }
 
