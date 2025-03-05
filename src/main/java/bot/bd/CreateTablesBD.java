@@ -1,9 +1,13 @@
 package bot.bd;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.*;
 
 
 public class CreateTablesBD {
+    private static final Logger logger = LoggerFactory.getLogger(CreateTablesBD.class);
 
     public void createTables() {
         Connection connection = null;
@@ -13,8 +17,10 @@ public class CreateTablesBD {
         try {
             // Подключение к базе данных
             connection = CreateConnectionBD.getInstance().getConnection();
+            logger.info("connection was created");
             // Создание объекта Statement
             statement = connection.createStatement();
+            logger.info("statement was created");
 
             //создание таблицы
             String create_users = "CREATE TABLE IF NOT EXISTS users (\n" +
@@ -40,8 +46,11 @@ public class CreateTablesBD {
 
             try {
                 statement.executeUpdate(create_users);
+                logger.info("Table {} created successfully.", create_users);
                 statement.executeUpdate(create_envs);
+                logger.info("Table {} created successfully.", create_envs);
                 statement.executeUpdate(create_test_acc_table);
+                logger.info("Table {} created successfully.", create_test_acc_table);
 
             } catch (SQLException e) {
                    throw e;

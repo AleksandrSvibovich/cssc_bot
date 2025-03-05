@@ -1,5 +1,8 @@
 package bot.bd;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,7 +10,7 @@ import java.sql.*;
 import java.util.Properties;
 
 public class CreateConnectionBD {
-
+    private static final Logger logger = LoggerFactory.getLogger(CreateConnectionBD.class);
     private static CreateConnectionBD instance;
     private Connection connection;
 
@@ -36,7 +39,8 @@ public class CreateConnectionBD {
 
             // Подключение к базе данных
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to the PostgreSQL server successfully.");
+            password = null;
+            logger.info("Connected to the PostgreSQL server successfully.");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
@@ -44,6 +48,7 @@ public class CreateConnectionBD {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Connected to the PostgreSQL server successfully.");
+        logger.info("Connected to the PostgreSQL server successfully.");
+
     }
 }

@@ -8,6 +8,8 @@ import bot.enums.URLS;
 import bot.getfromenvs.GetFromEnvs;
 import bot.keyboards.BotKeyboards;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,15 +21,35 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 
 
 public class MyTelegramBot extends TelegramLongPollingBot {
+    private static final Logger logger = LoggerFactory.getLogger(MyTelegramBot.class);
     GetFromEnvs getFromEnvs = new GetFromEnvs();
     HealthCheck healthCheck = new HealthCheck();
     Connection connection = CreateConnectionBD.getInstance().getConnection();
-    List<String> checkAccessList = Arrays.asList(getFromEnvs.getFromEnvsByName("userList").split(" "));
+    //    List<String> checkAccessList = Arrays.asList(getFromEnvs.getFromEnvsByName("userList").split(" "));
+    List<String> checkAccessList;
+    Statement statement;
+    ResultSet resultSet;
+
+    {
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("Select tg_name from Users");
+            while (resultSet.next()) {
+                // Получаем значение из колонки и добавляем его в список
+                String value = resultSet.getString("tg_name");
+                checkAccessList.add(value);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public String getBotUsername() {
