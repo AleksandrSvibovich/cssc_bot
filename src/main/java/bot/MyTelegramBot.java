@@ -2,7 +2,6 @@ package bot;
 
 import bot.auth.HealthCheck;
 import bot.bd.CreateConnectionBD;
-import bot.bd.CreateTablesBD;
 import bot.enums.ACCOUNTS;
 import bot.enums.URLS;
 import bot.getfromenvs.GetFromEnvs;
@@ -22,7 +21,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,24 +31,7 @@ public class MyTelegramBot extends TelegramLongPollingBot {
     HealthCheck healthCheck = new HealthCheck();
     Connection connection = CreateConnectionBD.getInstance().getConnection();
     //    List<String> checkAccessList = Arrays.asList(getFromEnvs.getFromEnvsByName("userList").split(" "));
-    List<String> checkAccessList;
-    Statement statement;
-    ResultSet resultSet;
 
-    {
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery("Select tg_name from Users");
-            while (resultSet.next()) {
-                // Получаем значение из колонки и добавляем его в список
-                String value = resultSet.getString("tg_name");
-                checkAccessList.add(value);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public String getBotUsername() {
@@ -69,10 +51,11 @@ public class MyTelegramBot extends TelegramLongPollingBot {
             String callData = update.getCallbackQuery().getData();
             long chatId = update.getCallbackQuery().getMessage().getChatId();
 
+
             String userName = update.getCallbackQuery().getFrom().getUserName();
 
-            System.out.println("LOGS!!! " + userName + "; Message " + update.getMessage());
-            if (!checkAccessList.contains(userName)) {
+//            System.out.println("LOGS!!! " + userName + "; Message " + update.getMessage());
+            if (!isUserHasPermission(userName)) {
                 sendMessage(chatId, "Sorry, but you don't have permission! Please contact with administrator @sashka_svb");
             }
 
@@ -128,6 +111,32 @@ public class MyTelegramBot extends TelegramLongPollingBot {
             if (messageText.equals("/start")) {
                 sendMessageWithButtons(chatId, "Выберите действие:");
             }
+        }
+    }
+
+    private boolean isUserHasPermission(String userName) {
+        List<String> checkAccessList = new ArrayList<>();
+        Statement statement;
+        ResultSet resultSet;
+
+        {
+            try {
+                statement = connection.createStatement();
+                resultSet = statement.executeQuery("Select tg_name from Users");
+                while (resultSet.next()) {
+                    // Получаем значение из колонки и добавляем его в список
+                    String value = resultSet.getString("tg_name");
+                    checkAccessList.add(value);
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (checkAccessList.contains(userName)){
+            return true;
+        }else {
+            return false;
         }
     }
 
