@@ -13,24 +13,24 @@ public class CreateTablesBD {
         try {
             // Подключение к базе данных
             connection = CreateConnectionBD.getInstance().getConnection();
-                        // Создание объекта Statement
+            // Создание объекта Statement
             statement = connection.createStatement();
 
             //создание таблицы
-            String create_users = "CREATE TABLE users (\n" +
+            String create_users = "CREATE TABLE IF NOT EXISTS users (\n" +
                     "    id SERIAL PRIMARY KEY,                \n" +
                     "    tg_name VARCHAR(255) NOT NULL,        \n" +
                     "    real_name VARCHAR(255) NOT NULL,      \n" +
                     "    availability_status BOOLEAN DEFAULT FALSE  \n" +
                     ");";
 
-            String create_envs = "CREATE TABLE environments (\n" +
+            String create_envs = "CREATE TABLE IF NOT EXISTS environments (\n" +
                     "    id SERIAL PRIMARY KEY,                \n" +
                     "    env_level VARCHAR(50) NOT NULL,       \n" +
                     "    env_url VARCHAR(255) NOT NULL         \n" +
                     ");";
 
-            String create_test_acc_table = "CREATE TABLE test_user_accs (\n" +
+            String create_test_acc_table = "CREATE TABLE IF NOT EXISTS test_user_accs (\n" +
                     "    id SERIAL PRIMARY KEY,                \n" +
                     "    env_level VARCHAR(50) NOT NULL,       \n" +
                     "    login VARCHAR(255) NOT NULL,          \n" +
@@ -39,45 +39,13 @@ public class CreateTablesBD {
 
 
             try {
-                // Пытаемся выполнить запрос к таблице
-                statement.executeQuery("Select * from users");
+                statement.executeUpdate(create_users);
+                statement.executeUpdate(create_envs);
+                statement.executeUpdate(create_test_acc_table);
+
             } catch (SQLException e) {
-                // Если таблицы не существует, создаем её
-                if (e.getSQLState().equals("42S02")) { // Код ошибки "таблица не существует"
-                    statement.executeUpdate(create_users);
-                } else {
-                    // Обработка других ошибок
-                    throw e;
-                }
+                   throw e;
             }
-
-            try {
-                // Пытаемся выполнить запрос к таблице
-                statement.executeQuery("Select * from environments");
-            } catch (SQLException e) {
-                // Если таблицы не существует, создаем её
-                if (e.getSQLState().equals("42S02")) { // Код ошибки "таблица не существует"
-                    statement.executeQuery(create_envs);
-                } else {
-                    // Обработка других ошибок
-                    throw e;
-                }
-            }
-
-            try {
-                // Пытаемся выполнить запрос к таблице
-                statement.executeQuery("Select * from test_user_accs");
-            } catch (SQLException e) {
-                // Если таблицы не существует, создаем её
-                if (e.getSQLState().equals("42S02")) { // Код ошибки "таблица не существует"
-                    statement.executeQuery(create_test_acc_table);
-                } else {
-                    // Обработка других ошибок
-                    throw e;
-                }
-            }
-
-
 
         } catch (SQLException e) {
             System.out.println("Connection failure.");
