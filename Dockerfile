@@ -2,26 +2,43 @@
 FROM openjdk:23-jdk-slim AS build
 
 # Установка Maven и unzip
-RUN apt-get update && apt-get install -y maven && apt-get clean
+RUN apt-get update && apt-get install -y \
+                                    maven \
+                                    curl \
+                                    && apt-get clean
+# Установка Node.js и npm
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+                                                        apt-get install -y nodejs
+# Установка необходимых библиотек для Playwright
+RUN apt-get install -y \
+    libnss3 \
+    libnspr4 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libxkbcommon0 \
+    libxdamage1 \
+    libpango-1.0-0 \
+    libcairo2 \
+    libasound2 \
+    libatspi2.0-0
 
 WORKDIR /app
 COPY . /app
-RUN mvn clean package
-RUN ls -l /app/target  # Проверка содержимого
-RUN jar tf /app/target/*.jar  # Проверка содержимого JAR-файла
 
-# Проверка манифеста
-RUN jar xf /app/target/*.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF
+# Установка зависимостей проекта
+RUN npm install playwright
+
+# Установка браузеров Playwright
+RUN npx playwright install
+
+RUN mvn clean package
 
 # Финальный этап
 FROM openjdk:23-jdk-slim
 
-
 WORKDIR /app
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
 COPY ./config.properties /app/config.properties
-
-RUN jar tf /app/my-Bot.jar  # Проверка содержимого JAR-файла
-RUN jar xf /app/my-Bot.jar META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF  # Проверка манифеста
 
 CMD ["java", "-cp", "my-Bot.jar:lib/*", "bot.Tgbot", "--logging.level.root=DEBUG"]
