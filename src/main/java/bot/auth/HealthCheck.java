@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 public class HealthCheck {
 
-    public static final String LOGIN_BODY = "src/test/java/checks/jsons/loginBody.json";
+    public static final String LOGIN_BODY = "src/main/java/checks/jsons/loginBody.json";
 
     public String checkAuth() throws Exception {
         Playwright pw = Playwright.create();

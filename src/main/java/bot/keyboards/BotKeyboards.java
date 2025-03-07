@@ -46,6 +46,10 @@ public class BotKeyboards {
         button8.setText("График релизов");
         button8.setCallbackData("sched_release");
 
+        InlineKeyboardButton button9 = new InlineKeyboardButton();
+        button9.setText("Как узнать версию фронта");
+        button9.setCallbackData("front_version");
+
         // Создаем ряд кнопок
         List<InlineKeyboardButton> row = new ArrayList<>();
         row.add(button1);
@@ -64,12 +68,17 @@ public class BotKeyboards {
         row4.add(button7);
         row4.add(button8);
 
+        List<InlineKeyboardButton> row5 = new ArrayList<>();
+        row4.add(button9);
+
         // Создаем клавиатуру
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(row);
         keyboard.add(row2);
         keyboard.add(row3);
         keyboard.add(row4);
+        keyboard.add(row5);
+
 
         markup.setKeyboard(keyboard);
     }

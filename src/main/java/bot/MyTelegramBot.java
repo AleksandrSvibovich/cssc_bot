@@ -2,6 +2,7 @@ package bot;
 
 import bot.auth.HealthCheck;
 import bot.bd.CreateConnectionBD;
+import bot.bd.DataSourceFactory;
 import bot.enums.ACCOUNTS;
 import bot.enums.URLS;
 import bot.getfromenvs.GetFromEnvs;
@@ -29,7 +30,7 @@ public class MyTelegramBot extends TelegramLongPollingBot {
     private static final Logger logger = LoggerFactory.getLogger(MyTelegramBot.class);
     GetFromEnvs getFromEnvs = new GetFromEnvs();
     HealthCheck healthCheck = new HealthCheck();
-    Connection connection = CreateConnectionBD.getInstance().getConnection();
+//    Connection connection = CreateConnectionBD.getInstance().getConnection();
     //    List<String> checkAccessList = Arrays.asList(getFromEnvs.getFromEnvsByName("userList").split(" "));
 
 
@@ -49,58 +50,58 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         String message;
         if (update.hasCallbackQuery()) {
             String callData = update.getCallbackQuery().getData();
-            logger.info( "this is callData " +  callData);
+            logger.info("this is callData " + callData);
             long chatId = update.getCallbackQuery().getMessage().getChatId();
 
 
             String userName = update.getCallbackQuery().getFrom().getUserName();
-            logger.info( "this is userName " +  userName);
+            logger.info("this is userName " + userName);
 //            System.out.println("LOGS!!! " + userName + "; Message " + update.getMessage());
             if (!isUserHasPermission(userName)) {
                 sendMessage(chatId, "Sorry, but you don't have permission! Please contact with administrator @sashka_svb");
+            } else {
+                switch (callData) {
+                    case "status_ift":
+                        try {
+                            sendMessage(chatId, "Проверяю авторизацию");
+                            message = healthCheck.checkAuth();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        break;
+                    case "urls_test_envs":
+                        String ift_open = getURLbyNames(URLS.IFT_OPEN);
+                        String ift = getURLbyNames(URLS.IFT);
+                        String psi = getURLbyNames(URLS.PSI);
+                        message = "Открытый ИФТ - " + ift_open + "\nИФТ - " + ift + "\nПСИ - " + psi;
+                        break;
+                    case "accounts_ift":
+                        message = "УЗ для ИФТ:\n" + getAccByTypes(ACCOUNTS.IFT) + "\nPass - Qazwsx123!";
+                        break;
+                    case "front_version":
+                        message = "Проверить версию фронта можно выполнив в консоли window.initDevTools()\n";
+                        break;
+                    case "accounts_psi":
+                        message = "УЗ для ПСИ:\n" + getAccByTypes(ACCOUNTS.PSI) + "\nPass - Qazwsx123!";
+                        break;
+                    case "accounts_kaip_ift":
+                        message = "УЗ для КАИП ИФТ:\n" + getAccByTypes(ACCOUNTS.KAIP_IFT) + "\nPass - Qwerty12345!";
+                        break;
+                    case "accounts_kaip_psi":
+                        message = "УЗ для КАИП ПСИ:\n" + getAccByTypes(ACCOUNTS.KAIP_PSI) + "\nPass - Qwerty12345!";
+                        break;
+                    case "expired_pass":
+                        message = "Сменить пароль можно здесь: \nhttps://vdi.vtb.ru";
+                        break;
+                    case "sched_release":
+                        message = "Сфера релизы: \nhttps://sfera.inno.local/pprc";
+                        break;
+                    default:
+                        message = "oooh no";
+                        break;
+                }
+                sendMessage(chatId, message);
             }
-
-            switch (callData) {
-                case "status_ift":
-                    try {
-                        sendMessage(chatId, "Проверяю авторизацию");
-                        message = healthCheck.checkAuth();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                    break;
-                case "urls_test_envs":
-                    String ift_open = getURLbyNames(URLS.IFT_OPEN);
-                    String ift = getURLbyNames(URLS.IFT);
-                    String psi = getURLbyNames(URLS.PSI);
-                    message = "Открытый ИФТ - " + ift_open + "\nИФТ - " + ift + "\nПСИ - " + psi;
-                    break;
-                case "accounts_ift":
-                    message = "УЗ для ИФТ:\n" + getAccByTypes(ACCOUNTS.IFT) + "\nPass - Qazwsx123!";
-                    break;
-                case "front_version":
-                    message = "Проверить версию фронта можно выполнив в консоли window.initDevTools()\n";
-                    break;
-                case "accounts_psi":
-                    message = "УЗ для ПСИ:\n" + getAccByTypes(ACCOUNTS.PSI) + "\nPass - Qazwsx123!";
-                    break;
-                case "accounts_kaip_ift":
-                    message = "УЗ для КАИП ИФТ:\n" + getAccByTypes(ACCOUNTS.KAIP_IFT) + "\nPass - Qwerty12345!";
-                    break;
-                case "accounts_kaip_psi":
-                    message = "УЗ для КАИП ПСИ:\n" + getAccByTypes(ACCOUNTS.KAIP_PSI) + "\nPass - Qwerty12345!";
-                    break;
-                case "expired_pass":
-                    message = "Сменить пароль можно здесь: \nhttps://vdi.vtb.ru";
-                    break;
-                case "sched_release":
-                    message = "Сфера релизы: \nhttps://sfera.inno.local/pprc";
-                    break;
-                default:
-                    message = "oooh no";
-                    break;
-            }
-            sendMessage(chatId, message);
         }
 
 
@@ -117,31 +118,24 @@ public class MyTelegramBot extends TelegramLongPollingBot {
 
     private boolean isUserHasPermission(String userName) {
         List<String> checkAccessList = new ArrayList<>();
-        Statement statement;
-        ResultSet resultSet;
 
-        {
-            try {
-                statement = connection.createStatement();
-                logger.info( "this is statement " +  "was created in permission Method");
-                resultSet = statement.executeQuery("Select tg_name from Users");
-                logger.info( "this is resultSet was executed" + resultSet.getString(0));
-                while (resultSet.next()) {
-                    // Получаем значение из колонки и добавляем его в список
-                    String value = resultSet.getString("tg_name");
-                    checkAccessList.add(value);
-                }
+        try (Connection connection = DataSourceFactory.getDataSource().getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT tg_name FROM users")) {
 
-            } catch (SQLException e) {
-                logger.error("Database error during access check", e);
-                throw new RuntimeException(e);
+            logger.info("Statement was created in permission method");
+
+            while (resultSet.next()) {
+                String value = resultSet.getString("tg_name");
+                checkAccessList.add(value);
             }
+
+        } catch (SQLException e) {
+            logger.error("Database error during access check", e);
+            throw new RuntimeException(e);
         }
-        if (checkAccessList.contains(userName)){
-            return true;
-        }else {
-            return false;
-        }
+
+        return checkAccessList.contains(userName);
     }
 
     // Метод для отправки сообщения с кнопками

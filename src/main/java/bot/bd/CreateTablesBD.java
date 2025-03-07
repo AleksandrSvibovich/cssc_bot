@@ -16,7 +16,8 @@ public class CreateTablesBD {
 
         try {
             // Подключение к базе данных
-            connection = CreateConnectionBD.getInstance().getConnection();
+             connection = DataSourceFactory.getDataSource().getConnection();
+//            connection = CreateConnectionBD.getInstance().getConnection();
             logger.info("connection was created");
             // Создание объекта Statement
             statement = connection.createStatement();
@@ -63,8 +64,11 @@ public class CreateTablesBD {
             // Закрытие ресурсов
             try {
                 if (resultSet != null) resultSet.close();
+                resultSet = null;
                 if (statement != null) statement.close();
+                statement = null;
                 if (connection != null) connection.close();
+                connection = null;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
