@@ -29,9 +29,6 @@ public class MyTelegramBot extends TelegramLongPollingBot {
     private static final Logger logger = LoggerFactory.getLogger(MyTelegramBot.class);
     GetFromEnvs getFromEnvs = new GetFromEnvs();
     HealthCheck healthCheck = new HealthCheck();
-//    Connection connection = CreateConnectionBD.getInstance().getConnection();
-    //    List<String> checkAccessList = Arrays.asList(getFromEnvs.getFromEnvsByName("userList").split(" "));
-
 
     @Override
     public String getBotUsername() {
@@ -199,18 +196,6 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         }
         return message;
     }
-
-//    private boolean checkAccess(String userName) {
-//        ResultSet resultSet;
-//        try {
-//            resultSet = connection.createStatement().executeQuery("Select * from users");
-//            System.out.println(resultSet.toString());
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return true; // to do обрабатывать результаты из resultSet и проверять есть ли там юзер или нету
-//    }
-
 }
 
 
