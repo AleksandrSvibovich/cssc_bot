@@ -1,7 +1,6 @@
 package bot;
 
 import bot.auth.HealthCheck;
-import bot.bd.CreateConnectionBD;
 import bot.bd.DataSourceFactory;
 import bot.enums.ACCOUNTS;
 import bot.enums.URLS;
@@ -111,7 +110,7 @@ public class MyTelegramBot extends TelegramLongPollingBot {
             long chatId = update.getMessage().getChatId();
 
             if (messageText.equals("/start")) {
-                sendMessageWithButtons(chatId, "Выберите действие:");
+                sendMessageWithButtons(chatId);
             }
         }
     }
@@ -139,14 +138,14 @@ public class MyTelegramBot extends TelegramLongPollingBot {
     }
 
     // Метод для отправки сообщения с кнопками
-    private void sendMessageWithButtons(long chatId, String text) {
+    private void sendMessageWithButtons(long chatId) {
         // Создаем кнопки и клавиатуру
         InlineKeyboardMarkup markup = new BotKeyboards().getKeyboard();
 
         // Создаем сообщение с клавиатурой
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText(text);
+        message.setText("Выберите действие:");
         message.setReplyMarkup(markup);
 
         try {
@@ -170,22 +169,13 @@ public class MyTelegramBot extends TelegramLongPollingBot {
     }
 
     private String getURLbyNames(URLS urls) {
-        String message;
 
-        switch (urls.toString()) {
-            case "IFT_OPEN":
-                message = getFromEnvs.getFromEnvsByName("ift_url_open");
-                break;
-            case "IFT":
-                message = getFromEnvs.getFromEnvsByName("ift_url");
-                break;
-            case "PSI":
-                message = getFromEnvs.getFromEnvsByName("psi_url");
-                break;
-            default:
-                message = "not found";
-        }
-        return message;
+        return switch (urls.toString()) {
+            case "IFT_OPEN" -> getFromEnvs.getFromEnvsByName("ift_url_open");
+            case "IFT" -> getFromEnvs.getFromEnvsByName("ift_url");
+            case "PSI" -> getFromEnvs.getFromEnvsByName("psi_url");
+            default -> "not found";
+        };
     }
 
     private String getAccByTypes(ACCOUNTS accounts) {
