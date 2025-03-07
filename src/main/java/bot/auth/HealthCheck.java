@@ -1,7 +1,7 @@
 package bot.auth;
 
-import checks.auxiliary.ApiClient;
-import checks.auxiliary.ApiConfig;
+import auxiliary.ApiClient;
+import auxiliary.ApiConfig;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.Page;
@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 public class HealthCheck {
 
-    public static final String LOGIN_BODY = "src/main/java/checks/jsons/loginBody.json";
+    public static final String LOGIN_BODY = "src/main/resources/loginBody.json";
 
     public String checkAuth() throws Exception {
         Playwright pw = Playwright.create();

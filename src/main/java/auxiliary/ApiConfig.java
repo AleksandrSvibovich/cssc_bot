@@ -1,4 +1,4 @@
-package checks.auxiliary;
+package auxiliary;
 
 public class ApiConfig {
     public static final String URL_LOGIN = "https://if.db-test.vtb.ru/ui-api-web/non-auth/v3/login";

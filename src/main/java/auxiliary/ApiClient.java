@@ -1,4 +1,4 @@
-package checks.auxiliary;
+package auxiliary;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.RequestOptions;
