@@ -1,14 +1,16 @@
 # Этап сборки
 FROM openjdk:23-jdk-slim AS build
 
-# Установка Maven и unzip
+# Установка Maven и curl
 RUN apt-get update && apt-get install -y \
                                     maven \
                                     curl \
                                     && apt-get clean
+
 # Установка Node.js и npm
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
                                                         apt-get install -y nodejs
+
 # Установка необходимых библиотек для Playwright
 RUN apt-get install -y \
     libnss3 \
@@ -21,7 +23,22 @@ RUN apt-get install -y \
     libpango-1.0-0 \
     libcairo2 \
     libasound2 \
-    libatspi2.0-0
+    libatspi2.0-0 \
+    libglib2.0-0 \
+    libgobject-2.0-0 \
+    libdbus-1-3 \
+    libdrm2 \
+    libexpat1 \
+    libxcb1 \
+    libx11-6 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libpango1.0-0 \
+    && apt-get clean
 
 WORKDIR /app
 COPY . /app
@@ -32,6 +49,7 @@ RUN npm install playwright
 # Установка браузеров Playwright
 RUN npx playwright install
 
+# Сборка Java-приложения
 RUN mvn clean package
 
 # Финальный этап
