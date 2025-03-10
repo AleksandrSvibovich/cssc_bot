@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
     libasound2 \
     libatspi2.0-0 \
     libglib2.0-0 \
+    libgobject-2.0-0 \
     libdbus-1-3 \
     libdrm2 \
     libexpat1 \
@@ -38,6 +39,9 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libgbm1 \
     && apt-get clean
+
+# Увеличение тайм-аута для установки браузеров
+ENV PLAYWRIGHT_BROWSERS_TIMEOUT=600000
 
 WORKDIR /app
 COPY . /app
@@ -58,8 +62,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
 COPY ./config.properties /app/config.properties
 
-# Копируем кэш браузеров
-COPY --from=build /root/.cache/ms-playwright /root/.cache/ms-playwright
-ENV PLAYWRIGHT_BROWSERS_TIMEOUT=600000
+# Проверка доступа к интернету
+RUN curl -I https://playwright.azureedge.net
 
 CMD ["java", "-cp", "my-Bot.jar:lib/*", "bot.Tgbot", "--logging.level.root=DEBUG"]
