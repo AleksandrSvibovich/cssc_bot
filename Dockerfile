@@ -1,5 +1,5 @@
 # Этап сборки
-FROM openjdk:23-jdk-slim AS build
+FROM openjdk:23-jdk AS build
 
 # Установка необходимых пакетов
 RUN apt-get update && apt-get install -y \
@@ -40,9 +40,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgbm1 \
     && apt-get clean
 
-# Проверка наличия библиотек
-RUN ldconfig -p | grep gobject
-
 # Увеличение тайм-аута для установки браузеров
 ENV PLAYWRIGHT_BROWSERS_TIMEOUT=600000
 
@@ -59,7 +56,7 @@ RUN npx playwright install
 RUN mvn clean package
 
 # Финальный этап
-FROM openjdk:23-jdk-slim
+FROM openjdk:23-jdk
 
 WORKDIR /app
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
