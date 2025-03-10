@@ -58,4 +58,8 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar /app/my-Bot.jar
 COPY ./config.properties /app/config.properties
 
+# Копируем кэш браузеров
+COPY --from=build /root/.cache/ms-playwright /root/.cache/ms-playwright
+ENV PLAYWRIGHT_BROWSERS_TIMEOUT=600000
+
 CMD ["java", "-cp", "my-Bot.jar:lib/*", "bot.Tgbot", "--logging.level.root=DEBUG"]
