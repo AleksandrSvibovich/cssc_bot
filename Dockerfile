@@ -1,5 +1,5 @@
 # Этап сборки
-FROM debian:bullseye-slim AS build
+FROM openjdk:23-jdk-slim AS build
 
 # Установка необходимых пакетов
 RUN apt-get update && apt-get install -y \
