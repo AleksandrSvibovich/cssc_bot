@@ -14,7 +14,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
     && apt-get clean
 
 # Установка необходимых библиотек для Playwright
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss3 \
     libnspr4 \
     libatk1.0-0 \
@@ -39,6 +39,9 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libgbm1 \
     && apt-get clean
+
+# Проверка наличия библиотек
+RUN ldconfig -p | grep gobject
 
 # Увеличение тайм-аута для установки браузеров
 ENV PLAYWRIGHT_BROWSERS_TIMEOUT=600000
