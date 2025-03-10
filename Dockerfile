@@ -1,5 +1,6 @@
 # Этап сборки
-FROM openjdk:23-jdk-slim AS build
+# FROM openjdk:23-jdk-slim AS build
+FROM debian:bullseye-slim AS build
 
 # Установка Maven и curl
 RUN apt-get update && apt-get install -y \
